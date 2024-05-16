@@ -1,0 +1,61 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.pomodoro-container {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  /* align-items: center; */
+  height: 100vh;
+}
+
+.pomodoro-counter {
+  border: 3px solid black;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
+  font-weight: bolder;
+}
+
+.button {
+  border-radius: 8px;
+  width: 100px;
+  text-align: center;
+  padding: 10px;
+  font-size: larger;
+  color: white;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button:hover {
+  cursor: pointer;
+  filter: brightness(80%);
+}
+
+.success {
+  background-color: green;
+}
+
+.danger {
+  background-color: brown;
+}
+
+.warning {
+  background-color: rgb(195, 195, 7);
+}
+
+.info {
+  background-color: blue;
+}
