@@ -3,19 +3,21 @@
   <head>
     <title>Pomodoro App</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="index.js"></script>
+    <script src="index.js" defer></script>
   </head>
   <body>
     <div class="pomodoro-container">
       <div class="pomodoro-counter">25:00</div>
-      <div>Click start for work Timer!</div>
+      <div id="pomodoro-text">Click start for work Timer!</div>
       <div class="button-container">
-        <div class="button success">Start</div>
-        <div class="button danger">Pause</div>
-        <div class="button info">Resume</div>
-        <div class="button warning">Reset</div>
+        <div class="button success" id="start-btn">Start</div>
+        <div class="button warning" id="pause-btn">Pause</div>
+        <div class="button danger" id="reset-btn">Reset</div>
       </div>
-      <div></div>
+      <div>
+        <h1 id="pomodoro-count">0</h1>
+        <h3>Pomodoros Completed</h3>
+      </div>
     </div>
   </body>
 </html>
