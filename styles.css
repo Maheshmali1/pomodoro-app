@@ -20,7 +20,7 @@ audio {
   align-items: center;
   text-align: center;
   height: 100vh;
-  background: url('/assets/background.jpg') no-repeat center center fixed;
+  background: url('assets/background.jpg') no-repeat center center fixed;
   background-size: cover;
 }
 
