@@ -1,10 +1,11 @@
-let minutes = 1;
-let seconds = 5;
+let minutes = 25;
+let seconds = 0;
 let paused = false;
 let timerIntervalId;
-let pomodoroCompleted = 0;
+let pomodoroCompleted = getWithTTL("pomodoroCompleted") || 0;
 let breakTime = false;
 
+let titleEle = document.getElementById("title");
 let startBtn = document.getElementById("start-btn");
 let pauseBtn = document.getElementById("pause-btn");
 let resetBtn = document.getElementById("reset-btn");
@@ -12,7 +13,8 @@ let resumeBtn = document.getElementById("resume-btn");
 let timer = document.querySelector(".pomodoro-counter");
 let pomodoroCount = document.getElementById('pomodoro-count');
 let pomodoroTextEle = document.getElementById('pomodoro-text');
-
+let audio = document.getElementById("alert-sound");
+pomodoroCount.innerHTML = pomodoroCompleted;
 
 pomodoroTextEle.innerHTML = "Click start for Work Timer!";
 startBtn.addEventListener("click", () => {
@@ -37,8 +39,11 @@ pauseBtn.addEventListener("click", () => {
 resetBtn.addEventListener("click", () => {
   minutes = 25;
   seconds = 0;
-  timer.innerHTML = `${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds
+  const value = `${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds
     }`;
+
+  timer.innerHTML = value;
+  titleEle.innerHTML = `Pomodoro App - ${value}`;
   clearInterval(timerIntervalId);
   pomodoroTextEle.innerHTML = "Click start for Work Timer!";
 })
@@ -54,16 +59,19 @@ const startTimer = () => {
     }
 
     if (minutes < 0) {
-      pomodoroCompleted++;
-      pomodoroCount.innerHTML = pomodoroCompleted;
-      clearInterval(timerIntervalId);
-
       if (!breakTime) {
+        clearInterval(timerIntervalId);
+        pomodoroCompleted++;
+        setWithTTL("pomodoroCompleted", pomodoroCompleted);
+        pomodoroCount.innerHTML = pomodoroCompleted;
+        audio.play();
+        breakTime = true;
+        pomodoroTextEle.innerHTML = "It's Break Time!!";
+
         minutes = 5;
         seconds = 0;
         startTimer();
-        breakTime = true;
-        pomodoroTextEle.innerHTML = "It's Break Time!!";
+
       }
       else {
         minutes = 25;
@@ -73,8 +81,35 @@ const startTimer = () => {
       }
     }
     else {
-      timer.innerHTML = `${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds
+      const value = `${minutes < 10 ? "0" + minutes : minutes}:${seconds < 10 ? "0" + seconds : seconds
         }`;
+
+      timer.innerHTML = value;
+      titleEle.innerHTML = `Pomodoro App - ${value}`;
     }
   }, 1000)
+}
+
+
+function setWithTTL(key, value) {
+  const now = new Date();
+  const item = {
+    value: value,
+    expiry: now.getTime() + (24 * 60 * 60 * 1000)
+  };
+  localStorage.setItem(key, JSON.stringify(item));
+}
+
+function getWithTTL(key) {
+  const itemStr = localStorage.getItem(key);
+  if (!itemStr) {
+    return null;
+  }
+  const item = JSON.parse(itemStr);
+  const now = new Date();
+  if (now.getTime() > item.expiry) {
+    localStorage.removeItem(key);
+    return null;
+  }
+  return item.value;
 }
